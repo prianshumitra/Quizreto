@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from sqlalchemy import text
 
 from app.database import engine
+from app.routers.auth import router as auth_router
 
 
 app = FastAPI(
@@ -9,6 +10,9 @@ app = FastAPI(
     description="Backend API for the QuizReto online quiz and assessment platform.",
     version="1.0.0"
 )
+
+
+app.include_router(auth_router)
 
 
 @app.get("/")
