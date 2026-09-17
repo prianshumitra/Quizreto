@@ -5,6 +5,7 @@ from app.database import engine
 from app.routers.auth import router as auth_router
 from app.routers.quiz import router as quiz_router
 from app.routers.question import router as question_router
+from app.routers.attempt import router as attempt_router
 
 
 app = FastAPI(
@@ -17,6 +18,7 @@ app = FastAPI(
 app.include_router(auth_router)
 app.include_router(quiz_router)
 app.include_router(question_router)
+app.include_router(attempt_router)
 
 
 @app.get("/")
