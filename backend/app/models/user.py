@@ -1,9 +1,11 @@
+
 from datetime import datetime, timezone
 
 from sqlalchemy import DateTime, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
+
 
 class User(Base):
     __tablename__ = "users"
@@ -38,6 +40,12 @@ class User(Base):
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
-        default=datetime.now(timezone.utc),
+        default=lambda: datetime.now(timezone.utc),
         nullable=False
     )
+
+    quizzes = relationship(
+        "Quiz",
+        back_populates="creator"
+    )
+
