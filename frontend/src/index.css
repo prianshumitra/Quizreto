@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-cursive: 'Caveat', cursive;
+
+  --color-terracotta: #D3542E;
+  --color-terracotta-hover: #B84320;
+  --color-terracotta-light: #FDF1ED;
+  --color-navy: #0F2D3D;
+  --color-navy-light: #183C50;
+  --color-cream: #FDF7ED;
+  --color-cream-card: #FFFDF9;
+  --color-saffron: #F4A261;
+  --color-saffron-light: #FEF3E7;
+  --color-gold: #D99A2B;
+  --color-dark: #1F2937;
+  --color-warm-border: #E7DBCC;
+}
+
+@layer base {
+  body {
+    background-color: #FDF7ED;
+    color: #1F2937;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+}
+
+/* Kantha Stitching Embroidery Styles */
+.border-kantha {
+  border-style: dashed;
+  border-width: 2px;
+  border-color: rgba(211, 84, 46, 0.4);
+}
+
+.border-kantha-navy {
+  border-style: dashed;
+  border-width: 2px;
+  border-color: rgba(15, 45, 61, 0.3);
+}
+
+.border-kantha-saffron {
+  border-style: dashed;
+  border-width: 2px;
+  border-color: rgba(244, 162, 97, 0.5);
+}
+
+.kantha-card {
+  position: relative;
+}
+.kantha-card::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1.5px dashed rgba(211, 84, 46, 0.25);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.kantha-divider {
+  display: flex;
+  items-center: center;
+  justify-content: center;
+  position: relative;
+  margin: 1.5rem 0;
+}
+.kantha-divider::before {
+  content: '- - - - ✦ - - - - ✦ - - - -';
+  letter-spacing: 0.25em;
+  font-size: 0.75rem;
+  color: rgba(211, 84, 46, 0.4);
+  font-weight: bold;
+}
+
+/* Indian Pattern Background Utility */
+.bg-mandala {
+  background-image: radial-gradient(#D3542E 0.75px, transparent 0.75px), radial-gradient(#0F2D3D 0.75px, #FDF7ED 0.75px);
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 15px;
+  opacity: 0.95;
+}
+
+.font-handwriting {
+  font-family: 'Caveat', cursive;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FDF7ED;
+}
+::-webkit-scrollbar-thumb {
+  background: #D9C8B4;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #D3542E;
+}
