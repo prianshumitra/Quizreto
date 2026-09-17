@@ -30,6 +30,11 @@ class QuizAttempt(Base):
         nullable=False
     )
 
+    percentage: Mapped[float] = mapped_column(
+        default=0.0,
+        nullable=False
+    )
+
     total_questions: Mapped[int] = mapped_column(
         Integer,
         nullable=False
@@ -46,5 +51,10 @@ class QuizAttempt(Base):
         nullable=True
     )
 
-    quiz = relationship("Quiz")
-    user = relationship("User")
+    quiz = relationship(
+        "Quiz"
+    )
+
+    user = relationship(
+        "User"
+    )

@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import func,select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.core.dependencies import get_current_user
@@ -10,7 +10,12 @@ from app.models.attempt import QuizAttempt
 from app.models.question import Question
 from app.models.quiz import Quiz
 from app.models.user import User
-from app.schemas.attempt import AttemptResponse, AttemptSubmit
+from app.schemas.attempt import (
+    AttemptHistoryResponse,
+    AttemptResponse,
+    AttemptStatsResponse,
+    AttemptSubmit,
+)
 
 
 router = APIRouter(
@@ -18,6 +23,98 @@ router = APIRouter(
     tags=["Attempts"]
 )
 
+
+# ---------------------------------------------------------
+# USER ATTEMPT HISTORY
+# ---------------------------------------------------------
+
+@router.get(
+    "/my-attempts",
+    response_model=list[AttemptHistoryResponse]
+)
+def get_my_attempts(
+        db: Session = Depends(get_db),
+        current_user: User = Depends(get_current_user)
+):
+    attempts = db.scalars(
+        select(QuizAttempt)
+        .where(
+            QuizAttempt.user_id == current_user.id
+        )
+        .order_by(
+            QuizAttempt.id.desc()
+        )
+    ).all()
+
+    return attempts
+
+
+# ---------------------------------------------------------
+# USER ATTEMPT STATISTICS
+# ---------------------------------------------------------
+
+@router.get(
+    "/my-attempts/stats",
+    response_model=AttemptStatsResponse
+)
+def get_my_attempt_stats(
+        db: Session = Depends(get_db),
+        current_user: User = Depends(get_current_user)
+):
+    attempts = db.scalars(
+        select(QuizAttempt)
+        .where(
+            QuizAttempt.user_id == current_user.id
+        )
+    ).all()
+
+    total_attempts = len(attempts)
+
+    completed_attempts = sum(
+        1
+        for attempt in attempts
+        if attempt.completed
+    )
+
+    completed = [
+        attempt
+        for attempt in attempts
+        if attempt.completed
+    ]
+
+    if completed:
+        average_score = sum(
+            attempt.score
+            for attempt in completed
+        ) / len(completed)
+
+        average_percentage = sum(
+            attempt.percentage
+            for attempt in completed
+        ) / len(completed)
+
+        best_percentage = max(
+            attempt.percentage
+            for attempt in completed
+        )
+
+    else:
+        average_score = 0.0
+        average_percentage = 0.0
+        best_percentage = 0.0
+
+    return {
+        "total_attempts": total_attempts,
+        "completed_attempts": completed_attempts,
+        "average_score": round(average_score, 2),
+        "average_percentage": round(average_percentage, 2),
+        "best_percentage": round(best_percentage, 2)
+    }
+
+
+# ---------------------------------------------------------
+# START QUIZ ATTEMPT
+# ---------------------------------------------------------
 
 @router.post(
     "/{quiz_id}/attempt",
@@ -30,7 +127,9 @@ def start_attempt(
         current_user: User = Depends(get_current_user)
 ):
     quiz = db.scalar(
-        select(Quiz).where(Quiz.id == quiz_id)
+        select(Quiz).where(
+            Quiz.id == quiz_id
+        )
     )
 
     if quiz is None:
@@ -41,13 +140,16 @@ def start_attempt(
 
     total_questions = db.scalar(
         select(func.count(Question.id))
-        .where(Question.quiz_id == quiz_id)
+        .where(
+            Question.quiz_id == quiz_id
+        )
     )
 
     new_attempt = QuizAttempt(
         quiz_id=quiz_id,
         user_id=current_user.id,
         score=0,
+        percentage=0.0,
         total_questions=total_questions,
         completed=False
     )
@@ -58,6 +160,10 @@ def start_attempt(
 
     return new_attempt
 
+
+# ---------------------------------------------------------
+# SUBMIT QUIZ ATTEMPT
+# ---------------------------------------------------------
 
 @router.post(
     "/attempts/{attempt_id}/submit",
@@ -107,18 +213,33 @@ def submit_attempt(
     score = 0
 
     for answer in submission.answers:
-        question = question_map.get(answer.question_id)
+        question = question_map.get(
+            answer.question_id
+        )
 
         if question is None:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Question {answer.question_id} does not belong to this quiz"
+                detail=(
+                    f"Question {answer.question_id} "
+                    "does not belong to this quiz"
+                )
             )
 
-        if answer.selected_option.upper() == question.correct_option.upper():
+        if (
+                answer.selected_option.upper()
+                == question.correct_option.upper()
+        ):
             score += 1
 
     attempt.score = score
+
+    attempt.percentage = (
+        (score / attempt.total_questions) * 100
+        if attempt.total_questions > 0
+        else 0.0
+    )
+
     attempt.completed = True
     attempt.submitted_at = datetime.now(timezone.utc)
 
@@ -127,6 +248,10 @@ def submit_attempt(
 
     return attempt
 
+
+# ---------------------------------------------------------
+# GET SINGLE ATTEMPT / RESULT
+# ---------------------------------------------------------
 
 @router.get(
     "/attempts/{attempt_id}",
@@ -156,3 +281,41 @@ def get_attempt(
         )
 
     return attempt
+
+
+# ---------------------------------------------------------
+# QUIZ ATTEMPT HISTORY
+# ---------------------------------------------------------
+
+@router.get(
+    "/{quiz_id}/attempts",
+    response_model=list[AttemptHistoryResponse]
+)
+def get_quiz_attempts(
+        quiz_id: int,
+        db: Session = Depends(get_db),
+        current_user: User = Depends(get_current_user)
+):
+    quiz = db.scalar(
+        select(Quiz).where(
+            Quiz.id == quiz_id
+        )
+    )
+
+    if quiz is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Quiz not found"
+        )
+
+    attempts = db.scalars(
+        select(QuizAttempt)
+        .where(
+            QuizAttempt.quiz_id == quiz_id
+        )
+        .order_by(
+            QuizAttempt.id.desc()
+        )
+    ).all()
+
+    return attempts

@@ -18,5 +18,24 @@ class AttemptResponse(BaseModel):
     user_id: int
     score: int
     total_questions: int
+    percentage: float
     completed: bool
     submitted_at: datetime | None
+
+
+class AttemptHistoryResponse(BaseModel):
+    id: int
+    quiz_id: int
+    score: int
+    total_questions: int
+    percentage: float
+    completed: bool
+    submitted_at: datetime | None
+
+
+class AttemptStatsResponse(BaseModel):
+    total_attempts: int
+    completed_attempts: int
+    average_score: float
+    average_percentage: float
+    best_percentage: float
