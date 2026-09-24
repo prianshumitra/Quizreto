@@ -57,21 +57,21 @@ export const Explore: React.FC = () => {
   });
 
   return (
-    <div className="space-y-8 pb-12">
+    <div className="space-y-6 pb-12">
       {/* Page Header */}
-      <div className="bg-[#FFFDF9] p-6 sm:p-8 rounded-3xl border border-[#E7DBCC] space-y-3">
-        <span className="text-xs font-bold text-[#D3542E] uppercase tracking-wider bg-[#FDF1ED] px-3 py-1 rounded-full border border-[#D3542E]/20 inline-block">
+      <div className="bg-[#3A1F25] p-6 sm:p-7 rounded-3xl border border-[#D6A24A]/25 space-y-3 shadow-[0_12px_35px_rgba(20,8,12,0.35)]">
+        <span className="text-[10px] font-bold text-[#D6A24A] uppercase tracking-widest bg-[#D6A24A]/10 px-3 py-1 rounded-full border border-[#D6A24A]/30 inline-block">
           Assessment Catalog
         </span>
-        <h1 className="font-serif text-3xl sm:text-4xl font-extrabold text-[#0F2D3D]">
+        <h1 className="font-serif text-2xl sm:text-3xl font-extrabold text-[#F5EBDD]">
           Explore Quizzes
         </h1>
-        <p className="text-xs sm:text-sm text-[#1F2937]/70">
+        <p className="text-xs sm:text-sm text-[#F5EBDD]/70">
           Choose a category and start your next challenge.
         </p>
 
         {/* Search & Sort Controls */}
-        <div className="pt-4 flex flex-col sm:flex-row items-center gap-4">
+        <div className="pt-2 flex flex-col sm:flex-row items-center gap-4">
           <div className="flex-1 w-full">
             <Input
               type="text"
@@ -83,14 +83,14 @@ export const Explore: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2 w-full sm:w-auto">
-            <SlidersHorizontal className="w-4 h-4 text-[#0F2D3D]/60 shrink-0" />
+            <SlidersHorizontal className="w-4 h-4 text-[#D6A24A] shrink-0" />
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as 'latest' | 'oldest')}
-              className="bg-[#FFFDF9] border border-[#E7DBCC] text-[#0F2D3D] text-xs font-semibold rounded-xl py-3 px-4 focus:outline-none focus:ring-2 focus:ring-[#D3542E] w-full sm:w-auto"
+              className="bg-[#321B22] border border-[#D6A24A]/25 text-[#F5EBDD] text-xs font-semibold rounded-xl py-3 px-4 focus:outline-none focus:ring-2 focus:ring-[#D6A24A] w-full sm:w-auto"
             >
-              <option value="latest">Sort by: Latest</option>
-              <option value="oldest">Sort by: Oldest</option>
+              <option value="latest" className="bg-[#321B22] text-[#F5EBDD]">Sort by: Latest</option>
+              <option value="oldest" className="bg-[#321B22] text-[#F5EBDD]">Sort by: Oldest</option>
             </select>
           </div>
         </div>
@@ -103,8 +103,8 @@ export const Explore: React.FC = () => {
               onClick={() => setSelectedCategory(cat)}
               className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
                 selectedCategory === cat
-                  ? 'bg-[#D3542E] text-white shadow-sm'
-                  : 'bg-[#FDF7ED] text-[#0F2D3D] hover:bg-[#E7DBCC]/50 border border-[#E7DBCC]'
+                  ? 'bg-[#D6A24A] text-[#321B22] shadow-md'
+                  : 'bg-[#321B22]/80 text-[#F5EBDD]/80 hover:bg-[#321B22] border border-[#D6A24A]/20'
               }`}
             >
               {cat}

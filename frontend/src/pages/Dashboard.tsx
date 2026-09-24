@@ -107,7 +107,7 @@ export const Dashboard: React.FC = () => {
   const name = user?.name || 'Learner';
 
   return (
-    <div className="space-y-10 pb-16">
+    <div className="space-y-7 pb-12">
 
 
       {/* =====================================================
@@ -190,9 +190,9 @@ export const Dashboard: React.FC = () => {
               <h1
                 className="
                   font-serif
-                  text-3xl
-                  sm:text-4xl
-                  lg:text-[42px]
+                  text-2xl
+                  sm:text-3xl
+                  lg:text-[34px]
                   leading-tight
                   font-bold
                 "
@@ -350,8 +350,8 @@ export const Dashboard: React.FC = () => {
           <h2
             className="
               font-serif
-              text-2xl
-              sm:text-3xl
+              text-xl
+              sm:text-2xl
               font-bold
               mt-1
             "
@@ -449,8 +449,8 @@ export const Dashboard: React.FC = () => {
               <h2
                 className="
                   font-serif
-                  text-2xl
-                  sm:text-3xl
+                  text-xl
+                  sm:text-2xl
                   font-bold
                   mt-1
                 "
@@ -485,13 +485,20 @@ export const Dashboard: React.FC = () => {
           </div>
 
 
-          <ContinueCard
-            quizTitle={quizzes[0]?.title || 'Explore a quiz'}
-            category={quizzes[0]?.description || 'Quizreto'}
-            currentQuestion={0}
-            totalQuestions={0}
-            quizId={quizzes[0]?.id || 1}
-          />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <ContinueCard
+                quizTitle={recentAttempts[0]?.quiz_title || quizzes[0]?.title || 'Explore a quiz'}
+                category={quizzes[0]?.description || 'Assessment'}
+                currentQuestion={recentAttempts[0] ? recentAttempts[0].score : (quizzes[0]?.questions_count ? 1 : 0)}
+                totalQuestions={recentAttempts[0] ? recentAttempts[0].total_questions : (quizzes[0]?.questions_count || 10)}
+                quizId={recentAttempts[0]?.quiz_id || quizzes[0]?.id || 1}
+              />
+            </div>
+            <div>
+              <QuoteCard />
+            </div>
+          </div>
 
         </section>
 
@@ -525,8 +532,8 @@ export const Dashboard: React.FC = () => {
             <h2
               className="
                 font-serif
-                text-2xl
-                sm:text-3xl
+                text-xl
+                sm:text-2xl
                 font-bold
                 mt-1
               "
@@ -584,13 +591,14 @@ export const Dashboard: React.FC = () => {
                     p-5
                     border
                     transition-all
-                    duration-200
-                    hover:-translate-y-1
-                    hover:shadow-[0_14px_35px_rgba(35,10,15,0.18)]
+                    duration-300
+                    hover:-translate-y-1.5
+                    hover:border-[#D6A24A]/60
+                    hover:shadow-[0_18px_40px_rgba(0,0,0,0.35)]
                   "
                   style={{
-                    backgroundColor: '#82403B',
-                    borderColor: 'rgba(245,235,221,0.10)',
+                    backgroundColor: '#3A1F25',
+                    borderColor: 'rgba(214,162,74,0.25)',
                   }}
                 >
 
@@ -621,7 +629,7 @@ export const Dashboard: React.FC = () => {
                   <h3
                     className="
                       font-serif
-                      text-lg
+                      text-base
                       font-bold
                     "
                     style={{
@@ -711,8 +719,8 @@ export const Dashboard: React.FC = () => {
               <h2
                 className="
                   font-serif
-                  text-2xl
-                  sm:text-3xl
+                  text-xl
+                  sm:text-2xl
                   font-bold
                   mt-1
                 "
@@ -849,8 +857,9 @@ export const Dashboard: React.FC = () => {
               <Card
                 key={att.id}
                 className="
-                  !bg-[#82403B]
-                  !border-[#F5EBDD]/10
+                  bg-[#3A1F25]
+                  border-[#D6A24A]/25
+                  hover:border-[#D6A24A]/50
                   flex
                   items-center
                   justify-between

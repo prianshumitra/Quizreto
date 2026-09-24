@@ -4,7 +4,6 @@ import { PlusCircle, CheckCircle, AlertCircle, Trash2 } from 'lucide-react';
 import { createQuiz } from '../api/quizzes';
 import { createQuestion } from '../api/questions';
 import { Input } from '../components/ui/Input';
-import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 
 interface QuestionFormItem {
@@ -113,31 +112,31 @@ export const CreateQuiz: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 pb-16">
+    <div className="max-w-4xl mx-auto space-y-6 pb-12">
       {/* Header */}
-      <div className="bg-[#FFFDF9] p-6 sm:p-8 rounded-3xl border border-[#E7DBCC] space-y-2">
-        <span className="text-xs font-bold text-[#D3542E] uppercase tracking-wider bg-[#FDF1ED] px-3 py-1 rounded-full border border-[#D3542E]/20 inline-block">
+      <div className="bg-[#3A1F25] p-6 sm:p-7 rounded-3xl border border-[#D6A24A]/25 space-y-2.5 shadow-[0_12px_35px_rgba(20,8,12,0.35)]">
+        <span className="text-[10px] font-bold text-[#D6A24A] uppercase tracking-widest bg-[#D6A24A]/10 px-3 py-1 rounded-full border border-[#D6A24A]/30 inline-block">
           Creator Studio
         </span>
-        <h1 className="font-serif text-3xl sm:text-4xl font-extrabold text-[#0F2D3D]">
+        <h1 className="font-serif text-2xl sm:text-3xl font-extrabold text-[#F5EBDD]">
           Create a New Quiz
         </h1>
-        <p className="text-xs sm:text-sm text-[#1F2937]/70">
+        <p className="text-xs sm:text-sm text-[#F5EBDD]/75">
           Build custom assessment quizzes with questions and multiple choices.
         </p>
       </div>
 
       {error && (
-        <div className="p-4 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-3">
-          <AlertCircle className="w-4 h-4 shrink-0" />
+        <div className="p-4 rounded-2xl bg-red-950/50 border border-red-500/40 text-[#F5EBDD] text-xs flex items-center gap-3">
+          <AlertCircle className="w-4 h-4 shrink-0 text-[#D6A24A]" />
           <span>{error}</span>
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Quiz Basic Details */}
-        <Card className="space-y-4">
-          <h3 className="font-serif text-xl font-bold text-[#0F2D3D]">1. Quiz Info</h3>
+        <Card className="space-y-4 bg-[#3A1F25] border border-[#D6A24A]/25">
+          <h3 className="font-serif text-xl font-bold text-[#F5EBDD]">1. Quiz Info</h3>
           <Input
             label="Quiz Title"
             type="text"
@@ -147,7 +146,7 @@ export const CreateQuiz: React.FC = () => {
             required
           />
           <div className="space-y-1.5">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-[#0F2D3D]">
+            <label className="block text-[10px] font-bold uppercase tracking-wider text-[#D6A24A]">
               Description (Category / Summary)
             </label>
             <textarea
@@ -155,7 +154,7 @@ export const CreateQuiz: React.FC = () => {
               placeholder="e.g. History assessment covering 1857 revolt to 1947 independence movement."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full bg-[#FFFDF9] border border-[#E7DBCC] text-[#1F2937] placeholder-[#1F2937]/40 text-sm rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-[#D3542E]"
+              className="w-full bg-[#321B22] border border-[#D6A24A]/25 text-[#F5EBDD] placeholder-[#F5EBDD]/40 text-sm rounded-xl p-4 transition-all focus:outline-none focus:ring-2 focus:ring-[#D6A24A]"
             />
           </div>
         </Card>
@@ -163,31 +162,30 @@ export const CreateQuiz: React.FC = () => {
         {/* Questions List */}
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h3 className="font-serif text-xl font-bold text-[#0F2D3D]">
+            <h3 className="font-serif text-xl font-bold text-[#F5EBDD]">
               2. Add Questions ({questions.length})
             </h3>
-            <Button
+            <button
               type="button"
-              variant="outline"
-              size="sm"
-              icon={<PlusCircle className="w-4 h-4" />}
               onClick={handleAddQuestionField}
+              className="px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 border border-[#D6A24A]/40 text-[#D6A24A] hover:bg-[#D6A24A]/10 transition-all"
             >
-              Add Question
-            </Button>
+              <PlusCircle className="w-4 h-4" />
+              <span>Add Question</span>
+            </button>
           </div>
 
           {questions.map((q, idx) => (
-            <Card key={idx} className="space-y-4 relative bg-[#FFFDF9] border border-[#E7DBCC]">
-              <div className="flex items-center justify-between border-b border-[#E7DBCC]/60 pb-3">
-                <span className="font-serif text-base font-bold text-[#D3542E]">
+            <Card key={idx} className="space-y-4 relative bg-[#3A1F25] border border-[#D6A24A]/25">
+              <div className="flex items-center justify-between border-b border-[#F5EBDD]/10 pb-3">
+                <span className="font-serif text-base font-bold text-[#D6A24A]">
                   Question #{idx + 1}
                 </span>
                 {questions.length > 1 && (
                   <button
                     type="button"
                     onClick={() => handleRemoveQuestionField(idx)}
-                    className="text-red-500 hover:text-red-700 p-1.5 rounded-lg hover:bg-red-50"
+                    className="text-[#D6A24A] hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -239,19 +237,19 @@ export const CreateQuiz: React.FC = () => {
               </div>
 
               <div className="pt-2 flex items-center gap-4">
-                <label className="text-xs font-semibold uppercase tracking-wider text-[#0F2D3D]">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-[#D6A24A]">
                   Correct Option:
                 </label>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4">
                   {(['A', 'B', 'C', 'D'] as const).map((opt) => (
-                    <label key={opt} className="flex items-center gap-1.5 cursor-pointer text-xs font-bold">
+                    <label key={opt} className="flex items-center gap-2 cursor-pointer text-xs font-bold text-[#F5EBDD]">
                       <input
                         type="radio"
                         name={`correct_opt_${idx}`}
                         value={opt}
                         checked={q.correct_option === opt}
                         onChange={() => handleQuestionChange(idx, 'correct_option', opt)}
-                        className="text-[#D3542E] focus:ring-[#D3542E]"
+                        className="accent-[#D6A24A] w-4 h-4 focus:ring-[#D6A24A]"
                       />
                       <span>Option {opt}</span>
                     </label>
@@ -264,12 +262,22 @@ export const CreateQuiz: React.FC = () => {
 
         {/* Form Action Buttons */}
         <div className="flex items-center justify-end gap-4 pt-4">
-          <Button type="button" variant="ghost" onClick={() => navigate('/explore')}>
+          <button
+            type="button"
+            onClick={() => navigate('/explore')}
+            className="px-5 py-2.5 rounded-xl text-xs font-bold text-[#F5EBDD]/70 hover:text-[#F5EBDD] hover:bg-white/5 transition-all"
+          >
             Cancel
-          </Button>
-          <Button type="submit" variant="primary" size="lg" isLoading={isLoading} icon={<CheckCircle className="w-5 h-5" />}>
-            Publish Quiz
-          </Button>
+          </button>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="px-7 py-3 rounded-xl text-xs font-bold flex items-center gap-2 shadow-lg transition-all hover:-translate-y-0.5 disabled:opacity-50"
+            style={{ backgroundColor: '#D6A24A', color: '#321B22' }}
+          >
+            <CheckCircle className="w-4 h-4" />
+            <span>{isLoading ? 'Publishing...' : 'Publish Quiz'}</span>
+          </button>
         </div>
       </form>
     </div>

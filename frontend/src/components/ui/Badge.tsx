@@ -14,12 +14,12 @@ export const Badge: React.FC<BadgeProps> = ({
   className = '',
 }) => {
   const variants = {
-    terracotta: 'bg-[#FDF1ED] text-[#D3542E] border-[#D3542E]/20',
-    navy: 'bg-[#0F2D3D]/10 text-[#0F2D3D] border-[#0F2D3D]/20',
-    saffron: 'bg-[#FEF3E7] text-[#D97706] border-[#F4A261]/30',
-    green: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    gold: 'bg-amber-50 text-amber-700 border-amber-200',
-    gray: 'bg-gray-100 text-gray-700 border-gray-200',
+    terracotta: 'bg-[#D3542E]/20 text-[#D6A24A] border-[#D6A24A]/40 shadow-[0_0_10px_rgba(214,162,74,0.15)]',
+    navy: 'bg-[#D6A24A]/15 text-[#D6A24A] border-[#D6A24A]/30 shadow-[0_0_10px_rgba(214,162,74,0.15)]',
+    saffron: 'bg-amber-500/20 text-[#D6A24A] border-amber-500/30 shadow-[0_0_10px_rgba(245,158,11,0.15)]',
+    green: 'bg-emerald-500/20 text-[#F5EBDD] border-emerald-500/30 shadow-[0_0_10px_rgba(16,185,129,0.15)]',
+    gold: 'bg-amber-400/20 text-[#D6A24A] border-amber-400/30 shadow-[0_0_10px_rgba(251,191,36,0.15)]',
+    gray: 'bg-white/10 text-white border-white/20',
   };
 
   const sizes = {

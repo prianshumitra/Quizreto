@@ -4,7 +4,6 @@ import {
   LayoutDashboard,
   Compass,
   History,
-  Bookmark,
   User,
   LogOut,
   PlusCircle,
@@ -32,7 +31,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen = false, onCloseMob
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
     { name: 'Explore', path: '/explore', icon: Compass },
     { name: 'My Attempts', path: '/my-attempts', icon: History },
-    { name: 'Bookmarks', path: '/explore?tab=bookmarks', icon: Bookmark },
     { name: 'Profile', path: '/profile', icon: User },
     { name: 'Create Quiz', path: '/create-quiz', icon: PlusCircle },
   ];
@@ -69,8 +67,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen = false, onCloseMob
               className={({ isActive }) =>
                 `flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
                   isActive
-                    ? 'bg-[#D3542E] text-white font-semibold shadow-md border border-dashed border-white/40 translate-x-1'
-                    : 'text-slate-300 hover:bg-[#183C50]/80 hover:text-white'
+                    ? 'bg-[#D6A24A] text-[#321B22] font-extrabold shadow-md translate-x-1'
+                    : 'text-[#F5EBDD]/80 hover:bg-[#183C50]/80 hover:text-[#D6A24A]'
                 }`
               }
             >
@@ -82,21 +80,21 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen = false, onCloseMob
       </nav>
 
       {/* User Info & Logout Footer */}
-      <div className="p-4 m-4 bg-[#183C50]/60 rounded-2xl border border-dashed border-[#234F69] space-y-3">
+      <div className="p-4 m-4 bg-[#183C50]/60 rounded-2xl border border-[#234F69] space-y-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-[#D3542E] text-white font-bold flex items-center justify-center text-sm shadow-inner border border-dashed border-white/40">
+          <div className="w-10 h-10 rounded-full bg-[#D6A24A] text-[#321B22] font-extrabold flex items-center justify-center text-sm shadow-inner">
             {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold text-white truncate">{user?.name || 'User'}</p>
-            <p className="text-xs text-slate-300 truncate">{user?.email}</p>
+            <p className="text-xs text-[#F5EBDD]/70 truncate">{user?.email}</p>
           </div>
         </div>
         <button
           onClick={handleLogout}
-          className="w-full flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold text-red-300 hover:text-white hover:bg-red-950/40 rounded-xl transition-colors border border-dashed border-red-900/40"
+          className="w-full flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold text-[#D6A24A] hover:text-white hover:bg-white/10 rounded-xl transition-colors border border-[#D6A24A]/30"
         >
-          <LogOut className="w-3.5 h-3.5" />
+          <LogOut className="w-3.5 h-3.5 text-[#D6A24A]" />
           <span>Log Out</span>
         </button>
       </div>

@@ -12,7 +12,6 @@ import { registerUser, loginUser } from '../api/auth';
 import { useAuth } from '../context/AuthContext';
 
 import { Input } from '../components/ui/Input';
-import { Button } from '../components/ui/Button';
 import { QuizretoLogo } from '../components/ui/QuizretoLogo';
 
 import { Navbar } from '../components/layout/Navbar';
@@ -231,10 +230,10 @@ export const Register: React.FC = () => {
               flex
               flex-col
               justify-between
+              bg-[#3A1F25]
+              border-r
+              border-[#D6A24A]/25
             "
-            style={{
-              backgroundColor: '#D8C3A5',
-            }}
           >
 
             <div>
@@ -261,11 +260,9 @@ export const Register: React.FC = () => {
                     text-[11px]
                     uppercase
                     tracking-[0.22em]
-                    font-semibold
+                    font-bold
+                    text-[#D6A24A]
                   "
-                  style={{
-                    color: '#8B3028',
-                  }}
                 >
                   Begin Your Journey
                 </p>
@@ -273,14 +270,12 @@ export const Register: React.FC = () => {
                 <h1
                   className="
                     font-serif
-                    text-3xl
-                    sm:text-4xl
+                    text-2xl
+                    sm:text-3xl
                     font-bold
                     tracking-tight
+                    text-[#F5EBDD]
                   "
-                  style={{
-                    color: '#321B22',
-                  }}
                 >
                   Create Account
                 </h1>
@@ -290,11 +285,8 @@ export const Register: React.FC = () => {
                     text-sm
                     leading-relaxed
                     max-w-sm
+                    text-[#F5EBDD]/75
                   "
-                  style={{
-                    color: '#321B22',
-                    opacity: 0.65,
-                  }}
                 >
                   Create your account and start exploring quizzes
                   across different subjects.
@@ -316,16 +308,14 @@ export const Register: React.FC = () => {
                     items-start
                     gap-2.5
                     text-xs
+                    bg-red-950/50
+                    border-red-500/40
+                    text-[#F5EBDD]
                   "
-                  style={{
-                    backgroundColor: 'rgba(139,48,40,0.08)',
-                    borderColor: 'rgba(139,48,40,0.22)',
-                    color: '#7B2924',
-                  }}
                 >
 
                   <AlertCircle
-                    className="w-4 h-4 shrink-0 mt-0.5"
+                    className="w-4 h-4 shrink-0 mt-0.5 text-[#D6A24A]"
                   />
 
                   <span>
@@ -349,7 +339,7 @@ export const Register: React.FC = () => {
                   placeholder="Prianshu Mitra"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  icon={<User className="w-4 h-4" />}
+                  icon={<User className="w-4 h-4 text-[#D6A24A]" />}
                   required
                 />
 
@@ -359,7 +349,7 @@ export const Register: React.FC = () => {
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  icon={<Mail className="w-4 h-4" />}
+                  icon={<Mail className="w-4 h-4 text-[#D6A24A]" />}
                   required
                 />
 
@@ -369,29 +359,36 @@ export const Register: React.FC = () => {
                   placeholder="At least 8 characters"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  icon={<Lock className="w-4 h-4" />}
+                  icon={<Lock className="w-4 h-4 text-[#D6A24A]" />}
                   required
                 />
 
 
                 {/* Submit */}
 
-                <Button
-                  variant="primary"
-                  size="lg"
+                <button
+                  type="submit"
+                  disabled={isLoading}
                   className="
                     w-full
-                    !bg-[#7B3933]
-                    hover:!bg-[#69302B]
-                    !text-[#F5EBDD]
-                    !border-0
-                    !shadow-none
+                    py-3
+                    px-4
+                    rounded-xl
+                    text-xs
+                    font-bold
+                    transition-all
+                    shadow-md
+                    hover:-translate-y-0.5
+                    disabled:opacity-50
+                    mt-2
                   "
-                  isLoading={isLoading}
-                  type="submit"
+                  style={{
+                    backgroundColor: '#D6A24A',
+                    color: '#321B22',
+                  }}
                 >
-                  Create Account
-                </Button>
+                  {isLoading ? 'Creating Account...' : 'Create Account'}
+                </button>
 
               </form>
 
@@ -407,11 +404,9 @@ export const Register: React.FC = () => {
                 pt-5
                 mt-7
                 border-t
+                border-[#F5EBDD]/15
+                text-[#F5EBDD]/75
               "
-              style={{
-                color: '#321B22',
-                borderColor: 'rgba(50,27,34,0.16)',
-              }}
             >
 
               Already have an account?{' '}
@@ -424,14 +419,13 @@ export const Register: React.FC = () => {
                   items-center
                   gap-1
                   hover:underline
+                  text-[#D6A24A]
+                  hover:text-white
                 "
-                style={{
-                  color: '#8B3028',
-                }}
               >
                 Login
 
-                <ArrowRight className="w-3 h-3" />
+                <ArrowRight className="w-3 h-3 text-[#D6A24A]" />
 
               </Link>
 

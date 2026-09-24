@@ -15,21 +15,21 @@ export const Footer: React.FC = () => {
           <div className="md:col-span-2 space-y-4">
             <QuizretoLogo variant="dark" size="lg" showTagline />
 
-            <p className="text-sm text-slate-300 max-w-sm leading-relaxed pt-2">
+            <p className="text-sm text-[#F5EBDD]/80 max-w-sm leading-relaxed pt-2">
               Quizzes for curious minds. Rooted in India, open to the world. Explore history, science, literature, technology, and more.
             </p>
-            <p className="font-handwriting text-xl text-[#F4A261]">
+            <p className="font-handwriting text-xl text-[#D6A24A]">
               "Knowledge Has No Boundaries"
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-serif font-semibold text-lg text-[#F4A261] mb-4 flex items-center gap-2">
+            <h4 className="font-serif font-semibold text-lg text-[#D6A24A] mb-4 flex items-center gap-2">
               <span>Explore</span>
-              <span className="text-xs text-[#D3542E]">✦</span>
+              <span className="text-xs text-[#D6A24A]">✦</span>
             </h4>
-            <ul className="space-y-2.5 text-sm text-slate-300 font-medium">
+            <ul className="space-y-2.5 text-sm text-[#F5EBDD]/80 font-medium">
               <li>
                 <Link to="/explore" className="hover:text-white transition-colors">All Quizzes</Link>
               </li>
@@ -47,11 +47,11 @@ export const Footer: React.FC = () => {
 
           {/* Account */}
           <div>
-            <h4 className="font-serif font-semibold text-lg text-[#F4A261] mb-4 flex items-center gap-2">
+            <h4 className="font-serif font-semibold text-lg text-[#D6A24A] mb-4 flex items-center gap-2">
               <span>Account</span>
-              <span className="text-xs text-[#D3542E]">✦</span>
+              <span className="text-xs text-[#D6A24A]">✦</span>
             </h4>
-            <ul className="space-y-2.5 text-sm text-slate-300 font-medium">
+            <ul className="space-y-2.5 text-sm text-[#F5EBDD]/80 font-medium">
               <li>
                 <Link to="/login" className="hover:text-white transition-colors">Login</Link>
               </li>
@@ -68,10 +68,10 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#F5EBDD]/70">
           <p>© {new Date().getFullYear()} Quizreto. Handcrafted Kantha Edition.</p>
           <p className="flex items-center gap-1 font-medium">
-            Crafted with <Heart className="w-3.5 h-3.5 text-[#D3542E] fill-[#D3542E]" /> for curious minds across Bengal & India.
+            Crafted with <Heart className="w-3.5 h-3.5 text-[#D6A24A] fill-[#D6A24A]" /> for curious minds across Bengal & India.
           </p>
         </div>
       </div>

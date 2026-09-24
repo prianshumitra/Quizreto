@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { HelpCircle, Star, ArrowRight, User } from 'lucide-react';
 import type { QuizResponse } from '../../types/api';
 import { Badge } from '../ui/Badge';
-import { Button } from '../ui/Button';
 import { QuizCoverImage } from '../ui/QuizCoverImage';
 
 interface QuizCardProps {
@@ -20,47 +19,67 @@ export const QuizCard: React.FC<QuizCardProps> = ({
   category = 'History',
 }) => {
   return (
-    <div className="bg-[#FFFDF9] rounded-2xl border border-[#E7DBCC] shadow-xs transition-all duration-200 hover:-translate-y-1 hover:border-[#D3542E]/50 hover:shadow-md flex flex-col justify-between overflow-hidden group">
+    <div className="bg-[#3A1F25] rounded-2xl border border-[#D6A24A]/25 shadow-[0_12px_32px_rgba(20,8,12,0.3)] transition-all duration-300 hover:-translate-y-1.5 hover:border-[#D6A24A]/60 hover:shadow-[0_20px_45px_rgba(0,0,0,0.4)] flex flex-col justify-between overflow-hidden group">
       {/* Top Cover Graphic Image */}
-      <QuizCoverImage category={category || quiz.title} className="h-40 w-full" />
+      <QuizCoverImage category={category || quiz.title} className="h-36 w-full" />
 
       {/* Card Body Content */}
-      <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+      <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
         <div>
-          <div className="flex items-center justify-between gap-2 mb-2">
+          <div className="flex items-center justify-between gap-2 mb-1.5">
             <Badge variant="saffron">{category}</Badge>
-            <div className="flex items-center gap-1 text-xs font-bold text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
-              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+            <div className="flex items-center gap-1 text-[11px] font-bold text-[#D6A24A] bg-[#D6A24A]/15 px-2 py-0.5 rounded-full border border-[#D6A24A]/30 shadow-[0_0_10px_rgba(214,162,74,0.15)]">
+              <Star className="w-3 h-3 fill-[#D6A24A] text-[#D6A24A]" />
               <span>{rating}</span>
             </div>
           </div>
 
-          <h3 className="font-serif text-lg font-bold text-[#0F2D3D] group-hover:text-[#D3542E] transition-colors line-clamp-1 mb-1.5">
+          <h3 className="font-serif text-base font-bold text-[#F5EBDD] group-hover:text-[#D6A24A] transition-colors line-clamp-1 mb-1">
             {quiz.title}
           </h3>
 
-          <p className="text-xs text-[#1F2937]/70 line-clamp-2 leading-relaxed">
+          <p className="text-[11px] text-[#F5EBDD]/70 line-clamp-2 leading-relaxed">
             {quiz.description || 'Challenge your knowledge with this carefully curated assessment.'}
           </p>
         </div>
 
-        <div className="pt-3 border-t border-[#E7DBCC]/60 space-y-3">
-          <div className="flex items-center justify-between text-xs text-[#0F2D3D]/70 font-medium">
+        <div className="pt-2.5 border-t border-[#F5EBDD]/10 space-y-2.5">
+          <div className="flex items-center justify-between text-[11px] text-[#F5EBDD]/70 font-medium">
             <span className="flex items-center gap-1.5">
-              <HelpCircle className="w-3.5 h-3.5 text-[#D3542E]" />
+              <HelpCircle className="w-3.5 h-3.5 text-[#D6A24A]" />
               {questionCount} Questions
             </span>
             <span className="flex items-center gap-1">
-              <User className="w-3.5 h-3.5 text-[#0F2D3D]/50" />
+              <User className="w-3.5 h-3.5 text-[#F5EBDD]/50" />
               Quizreto
             </span>
           </div>
 
           <Link to={`/quiz/${quiz.id}`} className="block">
-            <Button variant="primary" size="sm" className="w-full justify-between group-hover:bg-[#B84320]">
+            <button
+              className="
+                w-full
+                py-2
+                px-3.5
+                rounded-xl
+                text-xs
+                font-bold
+                flex
+                items-center
+                justify-between
+                transition-all
+                duration-200
+                shadow-md
+                group-hover:shadow-[0_0_15px_rgba(214,162,74,0.3)]
+              "
+              style={{
+                backgroundColor: '#D6A24A',
+                color: '#321B22',
+              }}
+            >
               <span>Take Quiz</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            </button>
           </Link>
         </div>
       </div>

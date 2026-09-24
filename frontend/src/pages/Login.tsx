@@ -6,7 +6,6 @@ import { loginUser } from '../api/auth';
 import { useAuth } from '../context/AuthContext';
 
 import { Input } from '../components/ui/Input';
-import { Button } from '../components/ui/Button';
 import { QuizretoLogo } from '../components/ui/QuizretoLogo';
 
 import { Navbar } from '../components/layout/Navbar';
@@ -233,7 +232,9 @@ export const Login: React.FC = () => {
             min-h-[620px]
             overflow-hidden
             rounded-[2rem]
-            bg-[#D8C3A5]
+            bg-[#3A1F25]
+            border
+            border-[#D6A24A]/30
             shadow-[0_30px_80px_rgba(20,8,12,0.40)]
             grid
             grid-cols-1
@@ -288,7 +289,7 @@ export const Login: React.FC = () => {
                     uppercase
                     tracking-[0.22em]
                     font-bold
-                    text-[#8B3028]
+                    text-[#D6A24A]
                     mb-2
                   "
                 >
@@ -298,10 +299,10 @@ export const Login: React.FC = () => {
                 <h1
                   className="
                     font-serif
-                    text-3xl
-                    sm:text-4xl
+                    text-2xl
+                    sm:text-3xl
                     font-bold
-                    text-[#321B22]
+                    text-[#F5EBDD]
                   "
                 >
                   Sign in to Quizreto
@@ -312,7 +313,7 @@ export const Login: React.FC = () => {
                     mt-2
                     text-sm
                     leading-6
-                    text-[#321B22]/60
+                    text-[#F5EBDD]/75
                   "
                 >
                   Continue where you left off.
@@ -329,10 +330,10 @@ export const Login: React.FC = () => {
                     mb-6
                     p-3.5
                     rounded-xl
-                    bg-[#A9442E]/[0.08]
+                    bg-red-950/50
                     border
-                    border-[#A9442E]/25
-                    text-[#7B2F29]
+                    border-red-500/40
+                    text-[#F5EBDD]
                     text-xs
                     flex
                     items-start
@@ -344,7 +345,7 @@ export const Login: React.FC = () => {
                     className="
                       w-4
                       h-4
-                      text-[#A9442E]
+                      text-[#D6A24A]
                       shrink-0
                       mt-0.5
                     "
@@ -369,7 +370,7 @@ export const Login: React.FC = () => {
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  icon={<Mail className="w-4 h-4" />}
+                  icon={<Mail className="w-4 h-4 text-[#D6A24A]" />}
                   required
                 />
 
@@ -380,7 +381,7 @@ export const Login: React.FC = () => {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  icon={<Lock className="w-4 h-4" />}
+                  icon={<Lock className="w-4 h-4 text-[#D6A24A]" />}
                   required
                 />
 
@@ -393,8 +394,8 @@ export const Login: React.FC = () => {
                     href="#forgot"
                     className="
                       font-semibold
-                      text-[#A9442E]
-                      hover:text-[#7B3933]
+                      text-[#D6A24A]
+                      hover:text-white
                       hover:underline
                     "
                   >
@@ -406,22 +407,28 @@ export const Login: React.FC = () => {
 
                 {/* LOGIN */}
 
-                <Button
-                  variant="primary"
-                  size="lg"
+                <button
+                  type="submit"
+                  disabled={isLoading}
                   className="
                     w-full
-                    !bg-[#7B3933]
-                    hover:!bg-[#682E2A]
-                    !text-[#F5EBDD]
-                    !border-[#7B3933]
-                    shadow-[0_8px_20px_rgba(59,31,37,0.20)]
+                    py-3
+                    px-4
+                    rounded-xl
+                    text-xs
+                    font-bold
+                    transition-all
+                    shadow-md
+                    hover:-translate-y-0.5
+                    disabled:opacity-50
                   "
-                  isLoading={isLoading}
-                  type="submit"
+                  style={{
+                    backgroundColor: '#D6A24A',
+                    color: '#321B22',
+                  }}
                 >
-                  Login
-                </Button>
+                  {isLoading ? 'Signing in...' : 'Login'}
+                </button>
 
 
                 {/* DIVIDER */}
@@ -430,20 +437,20 @@ export const Login: React.FC = () => {
 
                   <div className="absolute inset-0 flex items-center">
 
-                    <div className="w-full border-t border-[#321B22]/15" />
+                    <div className="w-full border-t border-[#F5EBDD]/15" />
 
                   </div>
 
                   <span
                     className="
                       relative
-                      bg-[#D8C3A5]
+                      bg-[#3A1F25]
                       px-3
                       text-[10px]
                       font-bold
                       uppercase
                       tracking-[0.16em]
-                      text-[#321B22]/40
+                      text-[#D6A24A]
                     "
                   >
                     Or continue with
@@ -454,49 +461,50 @@ export const Login: React.FC = () => {
 
                 {/* GOOGLE */}
 
-                <Button
-                  variant="ghost"
+                <button
                   type="button"
                   className="
                     w-full
+                    py-3
+                    px-4
+                    rounded-xl
                     border
-                    border-[#321B22]/15
-                    bg-transparent
-                    hover:bg-[#321B22]/[0.05]
-                    text-[#321B22]
+                    border-[#D6A24A]/30
+                    bg-[#321B22]
+                    hover:bg-[#43232A]
+                    text-[#F5EBDD]
                     text-xs
+                    font-bold
+                    flex
+                    items-center
+                    justify-center
+                    gap-2
+                    transition-all
                   "
-                  icon={
-                    <svg
-                      className="w-4 h-4"
-                      viewBox="0 0 24 24"
-                    >
-
-                      <path
-                        fill="#EA4335"
-                        d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"
-                      />
-
-                      <path
-                        fill="#4285F4"
-                        d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"
-                      />
-
-                      <path
-                        fill="#FBBC05"
-                        d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.4 0 15.2c0 2.8.7 5.5 1.9 7.9l3.7-2.9c-.2-.7-.4-1.5-.4-2.3z"
-                      />
-
-                      <path
-                        fill="#34A853"
-                        d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.3-6.4-5.2L1.9 16C3.7 19.7 7.5 23 12 23z"
-                      />
-
-                    </svg>
-                  }
                 >
-                  Continue with Google
-                </Button>
+                  <svg
+                    className="w-4 h-4 shrink-0"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="#EA4335"
+                      d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"
+                    />
+                    <path
+                      fill="#4285F4"
+                      d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"
+                    />
+                    <path
+                      fill="#FBBC05"
+                      d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.4 0 15.2c0 2.8.7 5.5 1.9 7.9l3.7-2.9c-.2-.7-.4-1.5-.4-2.3z"
+                    />
+                    <path
+                      fill="#34A853"
+                      d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.3-6.4-5.2L1.9 16C3.7 19.7 7.5 23 12 23z"
+                    />
+                  </svg>
+                  <span>Continue with Google</span>
+                </button>
 
               </form>
 
@@ -510,10 +518,10 @@ export const Login: React.FC = () => {
                 mt-8
                 pt-5
                 border-t
-                border-[#321B22]/15
+                border-[#F5EBDD]/15
                 text-center
                 text-xs
-                text-[#321B22]/60
+                text-[#F5EBDD]/75
               "
             >
 
@@ -523,8 +531,8 @@ export const Login: React.FC = () => {
                 to="/register"
                 className="
                   font-bold
-                  text-[#A9442E]
-                  hover:text-[#7B3933]
+                  text-[#D6A24A]
+                  hover:text-white
                   hover:underline
                   inline-flex
                   items-center
@@ -533,7 +541,7 @@ export const Login: React.FC = () => {
               >
                 Sign Up
 
-                <ArrowRight className="w-3 h-3" />
+                <ArrowRight className="w-3 h-3 text-[#D6A24A]" />
 
               </Link>
 

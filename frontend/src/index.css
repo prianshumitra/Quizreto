@@ -63,6 +63,18 @@
   pointer-events: none;
 }
 
+.kantha-card-dark {
+  position: relative;
+}
+.kantha-card-dark::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1.5px dashed rgba(214, 162, 74, 0.20);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
 .kantha-divider {
   display: flex;
   items-center: center;

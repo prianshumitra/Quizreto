@@ -39,7 +39,7 @@ export const Landing: React.FC = () => {
       title: 'General Science',
       desc: 'Physics, chemistry, biology & space',
       icon: Atom,
-      accent: '#7FA6A0',
+      accent: '#D6A24A',
       tag: 'Science',
     },
     {
@@ -53,7 +53,7 @@ export const Landing: React.FC = () => {
       title: 'Tech Trivia',
       desc: 'Programming, web & technology',
       icon: Laptop,
-      accent: '#7FA6A0',
+      accent: '#D6A24A',
       tag: 'Technology',
     },
     {
@@ -67,7 +67,7 @@ export const Landing: React.FC = () => {
       title: 'World Geography',
       desc: 'Countries, places & the natural world',
       icon: Globe,
-      accent: '#7FA6A0',
+      accent: '#D6A24A',
       tag: 'Geography',
     },
   ];
@@ -443,7 +443,7 @@ export const Landing: React.FC = () => {
 
                   <span className="w-8 h-px bg-[#D6A24A]" />
 
-                  <p className="text-sm font-semibold tracking-wide text-[#E1B07A]">
+                  <p className="text-sm font-semibold tracking-wide text-[#D6A24A]">
                     QuizReto
                   </p>
 
@@ -453,11 +453,11 @@ export const Landing: React.FC = () => {
                 <h1
                   className="
                     font-serif
-                    text-[3.4rem]
-                    sm:text-6xl
-                    lg:text-[4.8rem]
+                    text-[2.6rem]
+                    sm:text-5xl
+                    lg:text-[3.8rem]
                     font-bold
-                    leading-[0.94]
+                    leading-[0.96]
                     tracking-tight
                   "
                 >
@@ -474,11 +474,11 @@ export const Landing: React.FC = () => {
 
                 <p
                   className="
-                    mt-6
+                    mt-5
                     max-w-lg
-                    text-base
-                    sm:text-lg
-                    leading-7
+                    text-sm
+                    sm:text-base
+                    leading-6
                     text-[#F5EBDD]/70
                   "
                 >
@@ -544,7 +544,7 @@ export const Landing: React.FC = () => {
 
                 <div className="mt-8 flex items-center gap-3">
 
-                  <span className="w-2 h-2 rounded-full bg-[#7FA6A0]" />
+                  <span className="w-2 h-2 rounded-full bg-[#D6A24A]" />
 
                   <span className="text-xs text-[#F5EBDD]/40">
                     Learn something. Test yourself. Keep going.
@@ -579,10 +579,12 @@ export const Landing: React.FC = () => {
                     z-10
                     w-[290px]
                     rounded-2xl
-                    bg-[#F5EBDD]
+                    bg-[#321B22]
+                    border
+                    border-[#D6A24A]/30
                     p-6
-                    text-[#3A1F25]
-                    shadow-[0_25px_55px_rgba(0,0,0,0.30)]
+                    text-[#F5EBDD]
+                    shadow-[0_25px_55px_rgba(0,0,0,0.50)]
                     rotate-[1deg]
                   "
                 >
@@ -591,11 +593,11 @@ export const Landing: React.FC = () => {
 
                     <div>
 
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#8E493F]">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#D6A24A]">
                         Quick Quiz
                       </p>
 
-                      <p className="mt-1 text-xs text-[#3A1F25]/45">
+                      <p className="mt-1 text-xs text-[#F5EBDD]/60">
                         General Knowledge
                       </p>
 
@@ -607,13 +609,13 @@ export const Landing: React.FC = () => {
                         w-9
                         h-9
                         rounded-full
-                        bg-[#D6A24A]/15
+                        bg-[#D6A24A]/20
                         flex
                         items-center
                         justify-center
                       "
                     >
-                      <span className="font-serif font-bold text-[#A86F24]">
+                      <span className="font-serif font-bold text-[#D6A24A]">
                         ?
                       </span>
                     </div>
@@ -623,13 +625,13 @@ export const Landing: React.FC = () => {
 
                   <div className="mt-7">
 
-                    <p className="text-[10px] uppercase tracking-wider text-[#3A1F25]/40">
+                    <p className="text-[10px] uppercase tracking-wider text-[#F5EBDD]/50">
                       Question 01
                     </p>
 
-                    <h3 className="mt-2 font-serif text-xl font-bold leading-snug">
+                    <h3 className="mt-2 font-serif text-xl font-bold leading-snug text-[#F5EBDD]">
                       Which city is known as the{' '}
-                      <span className="text-[#3E7775]">
+                      <span className="text-[#D6A24A]">
                         City of Joy?
                       </span>
                     </h3>
@@ -639,13 +641,13 @@ export const Landing: React.FC = () => {
 
                   <div className="mt-6 space-y-2.5">
 
-                    <div className="flex items-center gap-3 rounded-lg border border-[#CDBBA6] bg-white/40 px-3 py-2.5">
+                    <div className="flex items-center gap-3 rounded-lg border border-[#F5EBDD]/15 bg-[#F5EBDD]/[0.04] px-3 py-2.5">
 
-                      <span className="w-6 h-6 rounded-full border border-[#B49F88] flex items-center justify-center text-[10px] font-semibold">
+                      <span className="w-6 h-6 rounded-full border border-[#F5EBDD]/30 flex items-center justify-center text-[10px] font-semibold text-[#F5EBDD]">
                         A
                       </span>
 
-                      <span className="text-xs font-medium">
+                      <span className="text-xs font-medium text-[#F5EBDD]">
                         Mumbai
                       </span>
 
@@ -659,8 +661,8 @@ export const Landing: React.FC = () => {
                         gap-3
                         rounded-lg
                         border
-                        border-[#3E7775]/35
-                        bg-[#3E7775]/[0.09]
+                        border-[#D6A24A]/40
+                        bg-[#D6A24A]/15
                         px-3
                         py-2.5
                       "
@@ -671,8 +673,8 @@ export const Landing: React.FC = () => {
                           w-6
                           h-6
                           rounded-full
-                          bg-[#3E7775]
-                          text-white
+                          bg-[#D6A24A]
+                          text-[#321B22]
                           flex
                           items-center
                           justify-center
@@ -683,22 +685,22 @@ export const Landing: React.FC = () => {
                         B
                       </span>
 
-                      <span className="text-xs font-semibold">
+                      <span className="text-xs font-semibold text-[#F5EBDD]">
                         Kolkata
                       </span>
 
-                      <Check className="ml-auto w-4 h-4 text-[#3E7775]" />
+                      <Check className="ml-auto w-4 h-4 text-[#D6A24A]" />
 
                     </div>
 
 
-                    <div className="flex items-center gap-3 rounded-lg border border-[#CDBBA6] bg-white/40 px-3 py-2.5">
+                    <div className="flex items-center gap-3 rounded-lg border border-[#F5EBDD]/15 bg-[#F5EBDD]/[0.04] px-3 py-2.5">
 
-                      <span className="w-6 h-6 rounded-full border border-[#B49F88] flex items-center justify-center text-[10px] font-semibold">
+                      <span className="w-6 h-6 rounded-full border border-[#F5EBDD]/30 flex items-center justify-center text-[10px] font-semibold text-[#F5EBDD]">
                         C
                       </span>
 
-                      <span className="text-xs font-medium">
+                      <span className="text-xs font-medium text-[#F5EBDD]">
                         Delhi
                       </span>
 
@@ -707,13 +709,13 @@ export const Landing: React.FC = () => {
                   </div>
 
 
-                  <div className="mt-6 pt-4 border-t border-[#CDBBA6] flex items-center justify-between">
+                  <div className="mt-6 pt-4 border-t border-[#F5EBDD]/10 flex items-center justify-between">
 
-                    <span className="text-[10px] text-[#3A1F25]/40">
+                    <span className="text-[10px] text-[#F5EBDD]/50">
                       1 of 10 questions
                     </span>
 
-                    <span className="text-[10px] font-semibold text-[#3E7775]">
+                    <span className="text-[10px] font-semibold text-[#D6A24A]">
                       Quizreto
                     </span>
 
@@ -731,7 +733,7 @@ export const Landing: React.FC = () => {
                     left-4
                     z-20
                     rounded-xl
-                    bg-[#E1B07A]
+                    bg-[#D6A24A]
                     px-4
                     py-2.5
                     shadow-lg
@@ -739,11 +741,11 @@ export const Landing: React.FC = () => {
                   "
                 >
 
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#3A1F25]">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#321B22]">
                     Learn
                   </p>
 
-                  <p className="text-xs font-serif font-bold text-[#3A1F25]">
+                  <p className="text-xs font-serif font-bold text-[#321B22]">
                     Test yourself.
                   </p>
 
@@ -768,11 +770,11 @@ export const Landing: React.FC = () => {
 
             <div>
 
-              <p className="mb-2 text-sm font-semibold text-[#E1B07A]">
+              <p className="mb-2 text-sm font-semibold text-[#D6A24A]">
                 Explore
               </p>
 
-              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#F5EBDD]">
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#F5EBDD]">
                 Find something to test.
               </h2>
 
@@ -897,9 +899,9 @@ export const Landing: React.FC = () => {
 
                       <h3
                         className="
-                          mt-6
+                          mt-5
                           font-serif
-                          text-xl
+                          text-lg
                           font-bold
                           text-[#F5EBDD]
                         "
@@ -1003,11 +1005,11 @@ export const Landing: React.FC = () => {
 
               <div>
 
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#E1B07A]">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#D6A24A]">
                   Quizreto
                 </p>
 
-                <h2 className="mt-2 font-serif text-3xl sm:text-4xl font-bold text-[#F5EBDD]">
+                <h2 className="mt-2 font-serif text-2xl sm:text-3xl font-bold text-[#F5EBDD]">
                   Ready to test yourself?
                 </h2>
 

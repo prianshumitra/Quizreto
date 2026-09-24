@@ -13,7 +13,6 @@ import {
 } from 'lucide-react';
 
 import { useAuth } from '../../context/AuthContext';
-import { Button } from '../ui/Button';
 import { QuizretoLogo } from '../ui/QuizretoLogo';
 
 export const Navbar: React.FC = () => {

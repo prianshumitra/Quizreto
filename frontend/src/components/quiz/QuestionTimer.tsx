@@ -33,8 +33,8 @@ export const QuestionTimer: React.FC<QuestionTimerProps> = ({
     <div
       className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold border transition-colors ${
         isLow
-          ? 'bg-red-50 text-red-700 border-red-200 animate-pulse'
-          : 'bg-[#FDF1ED] text-[#D3542E] border-[#D3542E]/20'
+          ? 'bg-[#D6A24A]/25 text-white border-[#D6A24A]/60 animate-pulse'
+          : 'bg-[#D6A24A]/15 text-[#D6A24A] border-[#D6A24A]/30'
       }`}
     >
       <Clock className="w-3.5 h-3.5" />

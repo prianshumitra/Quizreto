@@ -1,23 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import {
   Menu,
-  Sparkles,
   User,
   Bell,
   Search,
-  Flame,
   PlusCircle,
+  X,
+  CheckCircle2,
 } from 'lucide-react';
 
 import { Sidebar } from './Sidebar';
 import { useAuth } from '../../context/AuthContext';
+import { getMyAttemptStats } from '../../api/attempts';
 
 export const ProtectedLayout: React.FC = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notifications, setNotifications] = useState<string[]>([]);
 
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserStats = async () => {
+      try {
+        const stats = await getMyAttemptStats();
+        if (stats && stats.completed_attempts > 0) {
+          setNotifications([
+            `Great job! You have completed ${stats.completed_attempts} quiz assessments.`,
+            `Your average score is ${stats.average_score} pts. Keep going!`,
+          ]);
+        } else {
+          setNotifications(['Welcome to Quizreto! Start your first quiz.']);
+        }
+      } catch {
+        // Ignore error
+      }
+    };
+
+    fetchUserStats();
+  }, []);
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/explore?search=${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      navigate('/explore');
+    }
+  };
 
   return (
     <div className="flex h-screen bg-[#6F2D2A] overflow-hidden">
@@ -238,114 +271,46 @@ export const ProtectedLayout: React.FC = () => {
             </button>
 
 
-            {/* Workspace label */}
-
-            <div
-              className="
-                hidden
-                sm:flex
-                items-center
-                gap-2
-                px-3.5
-                py-1.5
-                rounded-full
-                border
-              "
-              style={{
-                color: '#D6A24A',
-                borderColor: 'rgba(214,162,74,0.28)',
-                backgroundColor: 'rgba(214,162,74,0.06)',
-              }}
-            >
-
-              <Sparkles className="w-3.5 h-3.5" />
-
-              <span className="text-[11px] font-semibold tracking-wide">
-                Quizreto Learning Workspace
-              </span>
-
-            </div>
-
-
-            {/* Search */}
-
-            <button
-              onClick={() => navigate('/explore')}
-              className="
-                hidden
-                md:flex
-                items-center
-                gap-2
-                px-3.5
-                py-1.5
-                rounded-full
-                border
-                transition-all
-                hover:bg-[#F5EBDD]/[0.07]
-              "
-              style={{
-                color: 'rgba(245,235,221,0.55)',
-                borderColor: 'rgba(245,235,221,0.12)',
-                backgroundColor: 'rgba(245,235,221,0.035)',
-              }}
-            >
-
-              <Search
-                className="w-3.5 h-3.5"
+            {/* Dynamic Search Form */}
+            <form onSubmit={handleSearchSubmit} className="hidden md:flex items-center">
+              <div
+                className="
+                  flex
+                  items-center
+                  gap-2
+                  px-3.5
+                  py-1.5
+                  rounded-full
+                  border
+                  transition-all
+                  focus-within:border-[#D6A24A]/60
+                  focus-within:bg-[#321B22]
+                "
                 style={{
-                  color: '#D6A24A',
+                  borderColor: 'rgba(245,235,221,0.15)',
+                  backgroundColor: 'rgba(245,235,221,0.04)',
                 }}
-              />
-
-              <span className="text-[11px] font-medium">
-                Search quizzes...
-              </span>
-
-            </button>
-
+              >
+                <Search
+                  className="w-3.5 h-3.5 shrink-0"
+                  style={{ color: '#D6A24A' }}
+                />
+                <input
+                  type="text"
+                  placeholder="Search quizzes..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="bg-transparent text-[11px] font-medium text-[#F5EBDD] placeholder-[#F5EBDD]/45 focus:outline-none w-40 lg:w-56"
+                />
+              </div>
+            </form>
           </div>
-
 
           {/* =============================================
               RIGHT HEADER
           ============================================= */}
-
-          <div className="flex items-center gap-2 sm:gap-3">
-
-            {/* Streak */}
-
-            <div
-              className="
-                hidden
-                sm:flex
-                items-center
-                gap-1.5
-                px-3
-                py-1.5
-                rounded-full
-                border
-              "
-              style={{
-                color: '#D6A24A',
-                borderColor: 'rgba(214,162,74,0.25)',
-                backgroundColor: 'rgba(214,162,74,0.06)',
-              }}
-            >
-
-              <Flame
-                className="w-3.5 h-3.5"
-                fill="#D6A24A"
-              />
-
-              <span className="text-[11px] font-semibold">
-                5 Day Streak
-              </span>
-
-            </div>
-
-
+          <div className="flex items-center gap-2 sm:gap-3 relative">
             {/* New Quiz */}
-
             <button
               onClick={() => navigate('/create-quiz')}
               className="
@@ -360,61 +325,107 @@ export const ProtectedLayout: React.FC = () => {
                 font-semibold
                 transition-all
                 hover:-translate-y-0.5
+                shadow-sm
               "
               style={{
                 backgroundColor: '#D6A24A',
                 color: '#321B22',
               }}
             >
-
               <PlusCircle className="w-3.5 h-3.5" />
-
               <span>New Quiz</span>
-
             </button>
 
-
-            {/* Notifications */}
-
-            <button
-              className="
-                relative
-                w-9
-                h-9
-                rounded-full
-                flex
-                items-center
-                justify-center
-                border
-                transition-colors
-                hover:bg-[#F5EBDD]/[0.07]
-              "
-              style={{
-                color: 'rgba(245,235,221,0.65)',
-                borderColor: 'rgba(245,235,221,0.12)',
-              }}
-              aria-label="Notifications"
-            >
-
-              <Bell className="w-4 h-4" />
-
-              <span
+            {/* Notifications Button */}
+            <div className="relative">
+              <button
+                onClick={() => setShowNotifications(!showNotifications)}
                 className="
-                  absolute
-                  top-[7px]
-                  right-[7px]
-                  w-2
-                  h-2
+                  relative
+                  w-9
+                  h-9
                   rounded-full
+                  flex
+                  items-center
+                  justify-center
                   border
+                  transition-colors
+                  hover:bg-[#F5EBDD]/[0.07]
                 "
                 style={{
-                  backgroundColor: '#D3542E',
-                  borderColor: '#321B22',
+                  color: 'rgba(245,235,221,0.75)',
+                  borderColor: 'rgba(245,235,221,0.15)',
                 }}
-              />
+                aria-label="Notifications"
+              >
+                <Bell className="w-4 h-4" />
+                {notifications.length > 0 && (
+                  <span
+                    className="
+                      absolute
+                      top-[7px]
+                      right-[7px]
+                      w-2
+                      h-2
+                      rounded-full
+                      border
+                    "
+                    style={{
+                      backgroundColor: '#D3542E',
+                      borderColor: '#321B22',
+                    }}
+                  />
+                )}
+              </button>
 
-            </button>
+              {/* Notifications Dropdown Panel */}
+              {showNotifications && (
+                <div
+                  className="
+                    absolute
+                    right-0
+                    mt-2
+                    w-72
+                    sm:w-80
+                    rounded-2xl
+                    bg-[#321B22]
+                    border
+                    border-[#D6A24A]/30
+                    shadow-[0_15px_40px_rgba(0,0,0,0.5)]
+                    p-4
+                    z-50
+                  "
+                >
+                  <div className="flex items-center justify-between pb-2.5 border-b border-[#F5EBDD]/10 mb-3">
+                    <span className="text-xs font-bold text-[#F5EBDD]">Notifications</span>
+                    <button
+                      onClick={() => setShowNotifications(false)}
+                      className="text-[#F5EBDD]/50 hover:text-[#F5EBDD]"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <div className="space-y-2.5">
+                    {notifications.length > 0 ? (
+                      notifications.map((note, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-start gap-2.5 p-2.5 rounded-xl bg-[#3A1F25] border border-[#D6A24A]/15 text-xs text-[#F5EBDD]/85"
+                        >
+                          <CheckCircle2 className="w-4 h-4 text-[#D6A24A] shrink-0 mt-0.5" />
+                          <span>{note}</span>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-xs text-[#F5EBDD]/50 text-center py-2">
+                        No new notifications
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
 
 
             {/* Vertical separator */}
