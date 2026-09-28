@@ -28,6 +28,20 @@ app.add_middleware(
 )
 
 
+import traceback
+from fastapi import Request
+from fastapi.responses import JSONResponse
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    error_trace = traceback.format_exc()
+    print("UNHANDLED EXCEPTION:", error_trace)
+    return JSONResponse(
+        status_code=500,
+        content={"detail": f"{type(exc).__name__}: {str(exc)}"}
+    )
+
+
 app.include_router(auth_router)
 
 # Attempt routes before quiz routes
