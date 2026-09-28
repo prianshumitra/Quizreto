@@ -1,4 +1,6 @@
+import os
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
 from app.database import engine
@@ -12,6 +14,17 @@ app = FastAPI(
     title="QuizReto API",
     description="Backend API for the QuizReto online quiz and assessment platform.",
     version="1.0.0"
+)
+
+cors_origins_env = os.getenv("CORS_ORIGINS", "*")
+origins = [origin.strip() for origin in cors_origins_env.split(",") if origin.strip()]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins if "*" not in origins else ["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
