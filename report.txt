@@ -1,0 +1,223 @@
+================================================================================
+QUIZRETO PROJECT COMPLETION & TECHNICAL DOCUMENTATION REPORT
+================================================================================
+Date: September 28, 2026
+Project: Quizreto — Knowledge Has No Boundaries
+Repository: https://github.com/prianshumitra/Quizreto
+Target Environment: Docker (Local/Self-hosted) & Vercel + Supabase (Cloud Production)
+Author / Developer: Prianshu Mitra
+
+--------------------------------------------------------------------------------
+1. EXECUTIVE SUMMARY
+--------------------------------------------------------------------------------
+Quizreto is a full-stack, responsive assessment platform designed to deliver
+engaging, culturally resonant quizzes with real-time scoring, analytical
+dashboards, and user-driven quiz creation.
+
+During this milestone, the application underwent complete production-grade
+engineering:
+  1. Full containerization of the Python FastAPI backend and React/Vite frontend.
+  2. Multi-tier Docker Compose orchestration with PostgreSQL 16.
+  3. Cloud PostgreSQL database provisioning and migration on Supabase.
+  4. Serverless cloud deployment of both frontend and backend on Vercel under
+     a unified project domain.
+  5. Built-in database seeding providing 5 comprehensive starter quizzes with
+     25 verified questions across History, Science, Technology, Geography,
+     and Literature.
+  6. Transition from static question metadata to real-time dynamic question
+     counting across all API endpoints and frontend cards.
+  7. Comprehensive architectural documentation and setup guides.
+
+--------------------------------------------------------------------------------
+2. TECHNICAL ARCHITECTURE & STACK
+--------------------------------------------------------------------------------
+Frontend:
+  - Framework: React 19 with TypeScript
+  - Build Tool: Vite 8.3
+  - Styling: Tailwind CSS v4 with bespoke Indian aesthetic palette
+  - Routing: React Router v7 (SPA with client-side history)
+  - Icons & FX: Lucide React, Canvas Confetti
+  - Networking: Axios with authorization bearer interceptor and response handlers
+
+Backend:
+  - Framework: FastAPI (Python 3.11 / 3.12 ASGI)
+  - Server: Uvicorn (standard worker)
+  - Database ORM: SQLAlchemy 2.0 with DeclarativeBase
+  - Migration Manager: Alembic
+  - Security: Passlib (Argon2id hashing), Python-Jose (JWT HS256 tokens)
+  - Data Validation: Pydantic v2 schemas
+
+Infrastructure & Storage:
+  - Cloud Database: Supabase Cloud PostgreSQL 17 (Session Pooler with TLS)
+  - Local Containers: Docker multi-stage builds (Alpine Linux, Python slim)
+  - Orchestration: Docker Compose (db, backend, frontend)
+  - Cloud Hosting: Vercel Services (Unified Vite + FastAPI Serverless Monorepo)
+
+--------------------------------------------------------------------------------
+3. DETAILED IMPLEMENTATION BREAKDOWN
+--------------------------------------------------------------------------------
+
+3.1. DOCKERIZATION (FRONTEND & BACKEND)
+  - Backend Dockerfile (backend/Dockerfile):
+    * Base image: python:3.11-slim for minimal attack surface and fast builds.
+    * Layer-cached pip install for requirements.txt.
+    * Automated startup entrypoint script (entrypoint.sh) running:
+        1. alembic upgrade head (applies pending schema changes)
+        2. uvicorn app.main:app --host 0.0.0.0 --port 8000
+    * Built-in HEALTHCHECK probing http://localhost:8000/health every 30s.
+
+  - Frontend Dockerfile (frontend/Dockerfile):
+    * Multi-stage build process:
+      Stage 1 (Builder): node:20-alpine executing npm ci and npm run build.
+      Stage 2 (Runtime): nginx:alpine serving compiled dist/ static assets.
+    * Custom Nginx Configuration (frontend/nginx.conf):
+      - Handles Single Page Application routing (try_files $uri $uri/ /index.html).
+      - Reverse-proxies /api/ requests to backend:8000.
+      - Proxies /docs and /openapi.json to FastAPI Swagger UI.
+      - Gzip compression and long-term immutable caching for static assets.
+
+  - Multi-Service Orchestration (docker-compose.yml):
+    * Defines 3 coordinated services:
+      1. quizreto-db: postgres:16-alpine with persistent volume and pg_isready
+         healthcheck.
+      2. quizreto-backend: Builds ./backend, connects to db, exposes port 8001:8000.
+      3. quizreto-frontend: Builds ./frontend, exposes ports 80 and 5173, reverse
+         proxying /api to backend:8000.
+    * Tested and validated locally with full container health passing.
+
+3.2. SUPABASE CLOUD DATABASE SETUP & MIGRATIONS
+  - Cloud Instance: Provisioned a PostgreSQL 17 database on Supabase (ap-south-1).
+  - Schema Migrations Executed:
+    * c0467716232e: Creates 'users' table (id, name, email, password_hash, role, created_at).
+    * 1293f7a2ac36: Creates 'quizzes' table (id, title, description, created_by, created_at).
+    * c212cc17b8c2: Creates 'questions' table (id, quiz_id, question_text, 4 options, correct_option).
+    * 9af667604a99: Creates 'quiz_attempts' table (id, quiz_id, user_id, score, total_questions, completed, submitted_at).
+    * f19c01bd9c1a: Adds 'percentage' float column to quiz_attempts.
+  - All migrations successfully applied to the cloud database.
+
+3.3. VERCEL SERVERLESS CLOUD DEPLOYMENT
+  - Unified Monorepo Configuration (vercel.json):
+    Utilized Vercel's multi-service architecture:
+      * Service "frontend": Root frontend/, framework "vite".
+      * Service "backend": Root backend/, framework "fastapi", entrypoint "main:app".
+      * Rewrites configured to route /api(/.*)? to the backend service and /(.*)
+        to the frontend service.
+  - Serverless Entrypoint (backend/main.py & api/index.py):
+    Standardized module exports exposing the FastAPI app instance for Vercel's
+    Python serverless lambda workers.
+  - Runtime Environment Variables:
+    DATABASE_URL, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, CORS_ORIGINS.
+
+3.4. PRE-POPULATED DEFAULT QUIZZES & SEEDING ENGINE
+  - Added backend/app/services/seed.py:
+    Automated idempotent seed service ensuring that whenever Quizreto is deployed
+    or started, default quizzes are immediately available for all logged-in users.
+  - Seeded Content:
+    1. Indian Constitution & Polity (5 questions on Constituent Assembly, Ambedkar,
+       Article 32, Fundamental Rights, schedules).
+    2. Wonders of General Science & Astronomy (5 questions on planetary moons,
+       mitochondria, atmospheric composition, gold symbol, speed of light).
+    3. Core Computer Science & Web Tech (5 questions on HTTP, LIFO stack, BST search,
+       SQL, HTTPS/TLS).
+    4. World Geography & Natural Wonders (5 questions on the Nile, lakes, Everest,
+       Vatican City, Gibraltar).
+    5. Literary Classics & Nobel Laureates (5 questions on Tagore, Hamlet, Austen,
+       Mahabharata, Orwell).
+  - Dynamic Self-Healing:
+    get_quizzes in backend/app/routers/quiz.py automatically checks and seeds the
+    database if empty, returning live quizzes immediately.
+
+3.5. DYNAMIC QUESTION COUNT & ENHANCED METADATA
+  - Backend Enhancement:
+    * Quiz model (backend/app/models/quiz.py): Added @property question_count.
+    * Schema (backend/app/schemas/quiz.py): Added question_count: int to QuizResponse.
+    * Router (backend/app/routers/quiz.py): Applied selectinload(Quiz.questions)
+      to eager-load related question sets efficiently in one query.
+  - Frontend Enhancement:
+    * QuizCard component (frontend/src/components/quiz/QuizCard.tsx):
+      - Replaced static default 10 with live quiz.question_count from backend.
+      - Implemented dynamic tag extraction ([Science], [Technology], etc.)
+        for accurate category pill display.
+      - Added singular/plural formatting ("5 Questions", "1 Question").
+
+--------------------------------------------------------------------------------
+4. KEY ENGINEERING CHALLENGES & RESOLUTIONS
+--------------------------------------------------------------------------------
+1. Empty Initial Alembic Migration:
+   - Challenge: The generated migration c0467716232e_create_users_table.py contained
+     an empty pass statement, causing foreign key failures when quizzes table was created.
+   - Solution: Handcrafted proper Table and Column definitions with indexes for
+     email and primary key, restoring migration integrity across all environments.
+
+2. Vercel Serverless IPv6 Incompatibility with Direct Supabase Host:
+   - Challenge: Supabase direct connection host (db.<project>.supabase.co) only
+     resolves to an IPv6 address (AAAA record). AWS Lambda / Vercel serverless
+     functions run on IPv4-only networks, resulting in 500 Connection Timeouts.
+   - Solution: Migrated connection URI to Supabase's Session Pooler
+     (aws-0-ap-south-1.pooler.supabase.com:5432) with username format
+     postgres.<project_ref> and sslmode=require. Implemented automated fallback
+     regex translation in backend/app/database.py to ensure zero downtime.
+
+3. Port Collision on Local Host during Docker Testing:
+   - Challenge: Local port 8000 was held by an external container.
+   - Solution: Configured BACKEND_PORT in docker-compose.yml to default to 8001
+     for host mapping while preserving internal port 8000 on the bridge network.
+
+--------------------------------------------------------------------------------
+5. VERIFICATION & QUALITY ASSURANCE
+--------------------------------------------------------------------------------
+- Database Query Verification: Tested live PostgreSQL queries from Python runtime
+  against Supabase, verifying database name and PostgreSQL 17 version.
+- Docker Build Verification: Both backend and frontend images compiled cleanly,
+  passing all healthcheck probes.
+- User Authentication Testing: Verified user registration endpoint on live Vercel
+  deployment, creating test user records with Argon2id hash storage.
+- Frontend Build Verification: Vite production compilation executed with zero
+  TypeScript or lint errors (dist/ bundle: 487 kB JS, 74 kB CSS).
+- Dynamic Data Verification: Confirmed backend returns question_count: 5 and UI
+  renders "5 Questions" accurately.
+
+--------------------------------------------------------------------------------
+6. PROJECT REPOSITORY & LIVE ARTIFACTS
+--------------------------------------------------------------------------------
+- GitHub Repository: https://github.com/prianshumitra/Quizreto
+- Branch: main
+- Latest Commits:
+  * 6296a67: Dynamic question counts on quiz cards and comprehensive README.md
+  * a5464d2: Add starter quizzes and automatic database seeding
+  * 715963a: Auto-convert IPv6 Supabase host to IPv4 pooler and add detailed error handler
+  * 0447612: Auto-append sslmode=require for Supabase in database.py
+  * 607fe5c: Add backend/main.py and set entrypoint in vercel.json
+  * 1e01907: Update vercel.json with Vercel Services configuration
+  * 02e46d7: Dockerized frontend and backend
+
+--------------------------------------------------------------------------------
+7. INSTRUCTIONS FOR GOOGLE DRIVE SUBMISSION
+--------------------------------------------------------------------------------
+To submit this report and project files to Google Drive as requested:
+
+1. Locate this file:
+   e:\Quizreto\report.txt
+
+2. (Optional) Create a ZIP archive of the project:
+   In PowerShell:
+   Compress-Archive -Path e:\Quizreto\* -DestinationPath e:\Quizreto_Submission.zip `
+     -Exclude @("*.venv*", "*node_modules*", "*.git*", "*dist*")
+
+3. Upload to Google Drive:
+   - Open https://drive.google.com
+   - Click "+ New" ➡️ "File upload"
+   - Select "report.txt" (and "Quizreto_Submission.zip" if required).
+
+4. Update Sharing Settings (Mandatory):
+   - Right-click the uploaded file in Google Drive.
+   - Select "Share" ➡️ "Share".
+   - Under "General access", change from "Restricted" to:
+     "Anyone with the link" (Viewer).
+   - Click "Copy link".
+
+5. Paste the copied Google Drive link into your submission portal.
+
+================================================================================
+END OF REPORT
+================================================================================
