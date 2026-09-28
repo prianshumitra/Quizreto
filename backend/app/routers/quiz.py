@@ -49,6 +49,13 @@ def get_quizzes(
         select(Quiz).order_by(Quiz.created_at.desc())
     ).all()
 
+    if not quizzes:
+        from app.services.seed import seed_default_quizzes
+        seed_default_quizzes(db)
+        quizzes = db.scalars(
+            select(Quiz).order_by(Quiz.created_at.desc())
+        ).all()
+
     return quizzes
 
 
