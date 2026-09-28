@@ -14,20 +14,42 @@ interface QuizCardProps {
 
 export const QuizCard: React.FC<QuizCardProps> = ({
   quiz,
-  questionCount = 10,
+  questionCount,
   rating = 4.8,
-  category = 'History',
+  category,
 }) => {
+  // Use real question count from backend if available
+  const actualQuestionCount =
+    questionCount ?? quiz.question_count ?? quiz.questions_count ?? 5;
+
+  // Detect category from tags like [Science] in description or title keywords
+  const displayCategory = React.useMemo(() => {
+    if (category && category !== 'History' && category !== 'General Knowledge') {
+      return category;
+    }
+    const desc = quiz.description || '';
+    const match = desc.match(/\[(.*?)\]/);
+    if (match) {
+      return match[1];
+    }
+    if (/polity|constitution|history|republic/i.test(quiz.title + desc)) return 'History';
+    if (/science|astronomy|physics|biology|chemistry/i.test(quiz.title + desc)) return 'Science';
+    if (/tech|computer|algorithm|web|code/i.test(quiz.title + desc)) return 'Technology';
+    if (/geography|continent|river|lake|mountain/i.test(quiz.title + desc)) return 'Geography';
+    if (/literature|classic|author|novel|poet/i.test(quiz.title + desc)) return 'Literature';
+    return category || 'General Knowledge';
+  }, [quiz, category]);
+
   return (
     <div className="bg-[#3A1F25] rounded-2xl border border-[#D6A24A]/25 shadow-[0_12px_32px_rgba(20,8,12,0.3)] transition-all duration-300 hover:-translate-y-1.5 hover:border-[#D6A24A]/60 hover:shadow-[0_20px_45px_rgba(0,0,0,0.4)] flex flex-col justify-between overflow-hidden group">
       {/* Top Cover Graphic Image */}
-      <QuizCoverImage category={category || quiz.title} className="h-36 w-full" />
+      <QuizCoverImage category={displayCategory} className="h-36 w-full" />
 
       {/* Card Body Content */}
       <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
         <div>
           <div className="flex items-center justify-between gap-2 mb-1.5">
-            <Badge variant="saffron">{category}</Badge>
+            <Badge variant="saffron">{displayCategory}</Badge>
             <div className="flex items-center gap-1 text-[11px] font-bold text-[#D6A24A] bg-[#D6A24A]/15 px-2 py-0.5 rounded-full border border-[#D6A24A]/30 shadow-[0_0_10px_rgba(214,162,74,0.15)]">
               <Star className="w-3 h-3 fill-[#D6A24A] text-[#D6A24A]" />
               <span>{rating}</span>
@@ -47,7 +69,7 @@ export const QuizCard: React.FC<QuizCardProps> = ({
           <div className="flex items-center justify-between text-[11px] text-[#F5EBDD]/70 font-medium">
             <span className="flex items-center gap-1.5">
               <HelpCircle className="w-3.5 h-3.5 text-[#D6A24A]" />
-              {questionCount} Questions
+              {actualQuestionCount} {actualQuestionCount === 1 ? 'Question' : 'Questions'}
             </span>
             <span className="flex items-center gap-1">
               <User className="w-3.5 h-3.5 text-[#F5EBDD]/50" />

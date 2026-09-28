@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 
 from app.core.dependencies import get_current_user
 from app.database import get_db
@@ -46,14 +46,14 @@ def get_quizzes(
         db: Session = Depends(get_db)
 ):
     quizzes = db.scalars(
-        select(Quiz).order_by(Quiz.created_at.desc())
+        select(Quiz).options(selectinload(Quiz.questions)).order_by(Quiz.created_at.desc())
     ).all()
 
     if not quizzes:
         from app.services.seed import seed_default_quizzes
         seed_default_quizzes(db)
         quizzes = db.scalars(
-            select(Quiz).order_by(Quiz.created_at.desc())
+            select(Quiz).options(selectinload(Quiz.questions)).order_by(Quiz.created_at.desc())
         ).all()
 
     return quizzes
@@ -68,7 +68,7 @@ def get_quiz(
         db: Session = Depends(get_db)
 ):
     quiz = db.scalar(
-        select(Quiz).where(
+        select(Quiz).options(selectinload(Quiz.questions)).where(
             Quiz.id == quiz_id
         )
     )

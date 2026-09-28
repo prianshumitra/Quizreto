@@ -46,3 +46,8 @@ class Quiz(Base):
         back_populates="quiz",
         cascade="all, delete-orphan"
     )
+
+    @property
+    def question_count(self) -> int:
+        return len(self.questions) if self.questions else 0
+

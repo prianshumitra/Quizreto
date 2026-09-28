@@ -20,6 +20,7 @@ export interface QuizResponse {
   // Optional enriched fields for UI
   category?: string;
   questions_count?: number;
+  question_count?: number;
   rating?: number;
 }
 

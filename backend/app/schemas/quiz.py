@@ -20,3 +20,4 @@ class QuizResponse(BaseModel):
     description: str | None
     created_by: int
     created_at: datetime
+    question_count: int = 0
