@@ -5,6 +5,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 load_dotenv()
+backend_dir_env = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".env"))
+if os.path.exists(backend_dir_env):
+    load_dotenv(backend_dir_env)
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
