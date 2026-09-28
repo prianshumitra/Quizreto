@@ -14,6 +14,10 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 if not DATABASE_URL:
     raise ValueError("DATABASE_URL is not set in the environment variables.")
 
+if ("supabase.co" in DATABASE_URL or "supabase.com" in DATABASE_URL) and "sslmode=" not in DATABASE_URL:
+    delimiter = "&" if "?" in DATABASE_URL else "?"
+    DATABASE_URL = f"{DATABASE_URL}{delimiter}sslmode=require"
+
 engine = create_engine(
     DATABASE_URL,
     pool_pre_ping=True
